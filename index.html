@@ -1,28 +1,106 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Expense Tracker</title>
-	<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
 </head>
+
 <body>
-	<header>
-		<h1>Expense Tracker</h1>
-	</header>
-	<main>
-		<form>
-			<label for="name">Expense Name:</label>
-			<input type="text" id="name">
-			<label for="amount">Expense Amount:</label>
-			<input type="number" id="amount">
-			<label for="date">Expense Date:</label>
-			<input type="date" id="date">
-			<button type="submit">Add Expense</button>
-		</form>
-		<ul id="expense-list"></ul>
-	</main>
-	<footer>
-		<p>&copy; 2023 Expense Tracker</p>
-	</footer>
-	<script src="app.js"></script>
+  <div class="container">
+    <h1 class="heading1">EXPENSE TRACKER</h1>
+    <form id="myform">
+      <div class="mt-4">
+        <label for="inputid">Choose Amount :</label>
+        <input type="text" id="inputid" class="form-control">
+      </div>
+
+      <div class="mt-3">
+        <label for="inputid1">Choose Description :</label>
+        <input type="text" id="inputid1" class="form-control">
+      </div>
+
+      <div class="mt-3">
+        <label for="status">Choose Category :</label>
+        <select id="status" class="form-control">
+
+          <option value="shopping">shopping</option>
+          <option value="cinema">cinema</option>
+          <option value="dinner">dinner</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-3">Add Expenses</button>
+    </form>
+    <ul id="listofItems"></ul>
+  </div>
+
+  <script>
+    var result = document.getElementById("myform");
+    result.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      let ans = event.target.inputid.value;
+      let ans2 = event.target.inputid1.value;
+      let ans3 = event.target.status.value;
+
+      let obj = {
+        ans,
+        ans2,
+        ans3
+      }
+      localStorage.getItem("details", JSON.stringify(obj));
+      showResult(obj);
+
+
+
+      function showResult() {
+        let parent = document.getElementById("listofItems");
+        let child1 = document.createElement("li");
+        child1.textContent = obj.ans + " " + obj.ans2 + " " + obj.ans3;
+
+        let child2 = document.createElement("input");
+        child2.type = "button";
+        child2.style.margin = "4px";
+        child2.value = "delete";
+
+        child2.onclick = () => {
+          localStorage.removeItem("details");
+          parent.removeChild(child1);
+        }
+
+        let child3 = document.createElement("input");
+        child3.type = "button";
+        child3.value = "Edit";
+
+        child3.onclick = () => {
+          localStorage.removeItem("details");
+          parent.removeChild(child1);
+
+          document.getElementById("inputid").value = obj.ans;
+          document.getElementById("inputid1").value = obj.ans2;
+          document.getElementById("status").value = obj.ans3;
+        }
+        child1.appendChild(child2);
+        child1.appendChild(child3);
+        parent.appendChild(child1);
+
+
+      }
+
+    })
+  </script>
+
 </body>
+
 </html>
